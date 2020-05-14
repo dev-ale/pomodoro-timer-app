@@ -1,28 +1,35 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app>
+    <Navbar></Navbar>
+    <v-content>
+      <Timer class="mt-10"></Timer>
+      <Tasks class="mt-5"></Tasks>
+    </v-content>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Navbar from '../src/components/Navbar'
+import Timer from '../src/components/Timer'
+import Tasks from '../src/components/Tasks'
 export default {
   name: 'App',
+
   components: {
-    HelloWorld
-  }
-}
+    Navbar,
+    Timer,
+    Tasks
+  },
+
+  data: () => ({
+    //
+  }),
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  .theme--light.v-application {
+    background: #FF5252;
+    color: rgba(0, 0, 0, 0.87);
+  }
 </style>
