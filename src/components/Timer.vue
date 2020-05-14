@@ -15,8 +15,8 @@
 
         <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="#FF5252" x-large dark width="200">
-                START
+            <v-btn color="#FF5252" x-large dark width="200" @click="onButtonClick">
+                {{ buttonText }}
             </v-btn>
             <v-spacer></v-spacer>
         </v-card-actions>
@@ -27,9 +27,94 @@
     export default {
         data () {
             return {
-                counter: '25:00'
+                counter: 25,
+                counting: false,
+                buttonText: 'START'
+            }
+        },
+        methods: {
+            onButtonClick () {
+                this.counting = !this.counting
+                if (this.counting) {
+                    this.buttonText = 'STOP'
+                    this.startCountdown()
+                }
+                else {
+                    this.buttonText = 'START'
+                    this.stopCountdown()
+                }
+                console.log(this.counting)
+
+            },
+            startCountdown () {
+                if(this.counter > 0 && this.counting) {
+                    setTimeout(() => {
+                        this.counter -= 1
+                        this.startCountdown()
+                    }, 1000)
+                }
+            },
+            stopCountdown () {
+
             }
         }
     }
 
 </script>
+
+<!--
+<script>
+    export default {
+        props : {
+            endDate : {  // pass date object till when you want to run the timer
+                type : Date,
+                default(){
+                    return new Date()
+                }
+            }
+        },
+        data(){
+            return{
+                now : new Date(),
+                timer : null
+            }
+        },
+        computed:{
+            hour(){
+                let h = Math.trunc((this.endDate - this.now) / 1000 / 3600);
+                return h>9?h:'0'+h;
+            },
+            min(){
+                let m = Math.trunc((this.endDate - this.now) / 1000 / 60) % 60;
+                return m>9?m:'0'+m;
+            },
+            sec(){
+                let s = Math.trunc((this.endDate - this.now)/1000) % 60
+                return s>9?s:'0'+s;
+            }
+        },
+        watch : {
+            endDate : {
+                immediate : true,
+                handler(newVal){
+                    if(this.timer){
+                        clearInterval(this.timer)
+                    }
+                    this.timer = setInterval(()=>{
+                        this.now = new Date()
+                        if(this.negative)
+                            return
+                        if(this.now > newVal){
+                            this.now = newVal
+                            this.$emit('endTime')
+                            clearInterval(this.timer)
+                        }
+                    }, 1000)
+                }
+            }
+        },
+        beforeDestroy(){
+            clearInterval(this.timer)
+        }
+    }
+</script>-->
