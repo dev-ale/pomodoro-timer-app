@@ -3,15 +3,30 @@
             max-width="500"
             class="mx-auto"
     >
-        <v-tabs centered color="#FF5252">
+        <v-tabs centered color="#FF5252" v-model="tabs">
             <v-tab>Pomodoro</v-tab>
             <v-tab>Short Break</v-tab>
             <v-tab>Long Break</v-tab>
         </v-tabs>
+        <v-tabs-items v-model="tabs">
+            <v-tab-item>
+                <v-card-text class="text-center">
+                    <h4 class="display-4">{{this.counter}}</h4>
+                </v-card-text>
+            </v-tab-item>
+            <v-tab-item>
+                <v-card-text class="text-center">
+                    <h4 class="display-4">5:00</h4>
+                </v-card-text>
+            </v-tab-item>
+            <v-tab-item>
+                <v-card-text class="text-center">
+                    <h4 class="display-4">10:00</h4>
+                </v-card-text>
+            </v-tab-item>
+        </v-tabs-items>
 
-        <v-card-text class="text-center">
-            <h4 class="display-4">{{this.counter}}</h4>
-        </v-card-text>
+
 
         <v-card-actions>
             <v-spacer></v-spacer>
@@ -27,6 +42,7 @@
     export default {
         data () {
             return {
+                tabs: null,
                 counter: 25,
                 counting: false,
                 buttonText: 'START'
