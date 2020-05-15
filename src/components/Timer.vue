@@ -1,27 +1,27 @@
 <template>
     <v-card
-            max-width="500"
+            max-width="450"
             class="mx-auto"
     >
         <v-tabs centered color="#FF5252" v-model="tabs">
-            <v-tab>Pomodoro</v-tab>
-            <v-tab>Short Break</v-tab>
-            <v-tab>Long Break</v-tab>
+            <v-tab @click="onTabPomodoro">Pomodoro</v-tab>
+            <v-tab @click="onTabShortBreak">Short Break</v-tab>
+            <v-tab @click="onTabLongBreak">Long Break</v-tab>
         </v-tabs>
         <v-tabs-items v-model="tabs">
             <v-tab-item>
                 <v-card-text class="text-center">
-                    <h4 class="display-4">{{this.counter}}</h4>
+                    <h4 class="display-4">{{ this.formatStoMSS(this.counter) }}</h4>
                 </v-card-text>
             </v-tab-item>
             <v-tab-item>
                 <v-card-text class="text-center">
-                    <h4 class="display-4">5:00</h4>
+                    <h4 class="display-4">{{ this.formatStoMSS(this.counter) }}</h4>
                 </v-card-text>
             </v-tab-item>
             <v-tab-item>
                 <v-card-text class="text-center">
-                    <h4 class="display-4">10:00</h4>
+                    <h4 class="display-4">{{ this.formatStoMSS(this.counter) }}</h4>
                 </v-card-text>
             </v-tab-item>
         </v-tabs-items>
@@ -39,16 +39,62 @@
 </template>
 
 <script>
+    import {Howl} from 'howler';
+    require('howler');
+
     export default {
         data () {
             return {
                 tabs: null,
-                counter: 25,
+                pomodoroTime: 10,
+                shortBreakTime: 3,
+                longBreakTime: 5,
+                counter: 10,
                 counting: false,
-                buttonText: 'START'
+                buttonText: 'START',
+                selectedPomodoro: true,
+                selectedShortBreak: false,
+                selectedLongBreak: false
             }
         },
         methods: {
+            playSound(filePath, volume) {
+                let sound = new Howl({
+                    html5: true,
+                    src: filePath,
+                    volume: volume
+                });
+                sound.play();
+            },
+            onTabPomodoro() {
+                console.log("Pomodoro selected")
+                this.counter = this.pomodoroTime
+                this.selectedPomodoro = true
+                this.selectedShortBreak = false
+                this.selectedLongBreak = false
+                // Todo change Background Color
+            },
+            onTabShortBreak() {
+                console.log("Short Break selected")
+                this.counter = this.shortBreakTime
+                this.selectedPomodoro = false
+                this.selectedShortBreak = true
+                this.selectedLongBreak = false
+                // Todo change Background Color
+            },
+            onTabLongBreak() {
+                console.log("Long Break selected")
+                this.counter = this.longBreakTime
+                this.selectedPomodoro = false
+                this.selectedShortBreak = false
+                this.selectedLongBreak = true
+                // Todo change Background Color
+            },
+            // Method to change seconds in minutes and seconds M:SS
+            formatStoMSS(s){
+                return(s-(s%=60))/60+(9<s?':':':0')+s
+            },
+            // Methode die aufgerufen wird wenn der Knopf gedrückt wird
             onButtonClick () {
                 this.counting = !this.counting
                 if (this.counting) {
@@ -62,6 +108,7 @@
                 console.log(this.counting)
 
             },
+            // Startet Countdown
             startCountdown () {
                 if(this.counter > 0 && this.counting) {
                     setTimeout(() => {
@@ -69,68 +116,39 @@
                         this.startCountdown()
                     }, 1000)
                 }
-            },
-            stopCountdown () {
+                else {
+                    if (this.selectedPomodoro) {
+                        this.playSound('bell.mp3',0.6)
+                        console.log("pomodoro finished")
+                        setTimeout(() => {
+                            this.counter = this.pomodoroTime
+                            this.onButtonClick()
+                        }, 1000);
 
+                    }
+                    else if (this.selectedShortBreak){
+                        this.playSound('bell.mp3',0.6)
+                        console.log("short break finished")
+                        setTimeout(() => {
+                            this.counter = this.shortBreakTime
+                            this.onButtonClick()
+                        }, 1000);
+
+                    }
+                    else if (this.selectedLongBreak) {
+                        this.playSound('bell.mp3',0.6)
+                        console.log("long break finished")
+                        setTimeout(() => {
+                            this.counter = this.longBreakTime
+                            this.onButtonClick()
+                        }, 1000);
+
+                    }
+
+                }
             }
         }
     }
 
 </script>
 
-<!--
-<script>
-    export default {
-        props : {
-            endDate : {  // pass date object till when you want to run the timer
-                type : Date,
-                default(){
-                    return new Date()
-                }
-            }
-        },
-        data(){
-            return{
-                now : new Date(),
-                timer : null
-            }
-        },
-        computed:{
-            hour(){
-                let h = Math.trunc((this.endDate - this.now) / 1000 / 3600);
-                return h>9?h:'0'+h;
-            },
-            min(){
-                let m = Math.trunc((this.endDate - this.now) / 1000 / 60) % 60;
-                return m>9?m:'0'+m;
-            },
-            sec(){
-                let s = Math.trunc((this.endDate - this.now)/1000) % 60
-                return s>9?s:'0'+s;
-            }
-        },
-        watch : {
-            endDate : {
-                immediate : true,
-                handler(newVal){
-                    if(this.timer){
-                        clearInterval(this.timer)
-                    }
-                    this.timer = setInterval(()=>{
-                        this.now = new Date()
-                        if(this.negative)
-                            return
-                        if(this.now > newVal){
-                            this.now = newVal
-                            this.$emit('endTime')
-                            clearInterval(this.timer)
-                        }
-                    }, 1000)
-                }
-            }
-        },
-        beforeDestroy(){
-            clearInterval(this.timer)
-        }
-    }
-</script>-->

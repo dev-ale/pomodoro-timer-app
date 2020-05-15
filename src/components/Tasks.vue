@@ -1,5 +1,5 @@
 <template>
-    <v-card max-width="500" class="mx-auto">
+    <v-card max-width="450" class="mx-auto">
         <v-card-title>Tasks: </v-card-title>
         <v-list flat>
             <v-list-item-group v-model="tasks" color="primary">
