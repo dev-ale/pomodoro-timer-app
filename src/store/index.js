@@ -9,9 +9,13 @@ export default new Vuex.Store({
     pomodoroDuration: 10,
     shortBreakDuration: 3,
     longBreakDuration: 10,
-    finishedPomodoros: []
+    finishedPomodoros: [],
+    actualPomodoroTitle: 'Pomodoro'
   },
   mutations: {
+    setActualPomodoroTitle (state, payload){
+      state.actualPomodoroTitle = payload
+    },
     setPomodoroDuration (state, payload){
       state.pomodoroDuration = payload
     },
@@ -28,6 +32,9 @@ export default new Vuex.Store({
   actions: {
   },
   getters: {
+    getActualPomodoroTitle (state){
+      return state.actualPomodoroTitle
+    },
     getPomodoroDuration (state){
       return state.pomodoroDuration
     },

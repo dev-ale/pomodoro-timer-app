@@ -26,6 +26,9 @@
         computed: {
             pomodoros () {
                 return this.$store.getters.getFinishedPomodoros
+            },
+            getActualPomodoroTitle () {
+                return this.$store.getters.getActualPomodoroTitle
             }
         },
         methods: {
@@ -39,7 +42,7 @@
             }
         },
         data: () => ({
-            actualPomodoroTitle: 'Pomodoro',
+            actualPomodoroTitle: 'empty',
             today: new Date()
         }),
 

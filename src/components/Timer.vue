@@ -54,10 +54,16 @@
                 buttonText: 'START',
                 selectedPomodoro: true,
                 selectedShortBreak: false,
-                selectedLongBreak: false
+                selectedLongBreak: false,
+                actualPomodoroTitle: 'Pomodoro',
+                today: new Date()
             }
         },
         methods: {
+            addFinishedPomodoro () {
+                this.$store.commit('addFinishedPomodoro',{ title: 'pomodoro 1', date: this.today })
+            },
+
             playSound(filePath, volume) {
                 let sound = new Howl({
                     html5: true,
@@ -120,6 +126,7 @@
                     if (this.selectedPomodoro) {
                         this.playSound('bell.mp3',0.6)
                         console.log("pomodoro finished")
+                        this.addFinishedPomodoro()
                         setTimeout(() => {
                             this.counter = this.pomodoroTime
                             this.onButtonClick()
