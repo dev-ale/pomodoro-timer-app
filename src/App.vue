@@ -1,5 +1,6 @@
 <template>
   <v-app>
+
     <Navbar></Navbar>
     <v-content>
       <Timer class="mt-10"></Timer>

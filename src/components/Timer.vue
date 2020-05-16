@@ -1,4 +1,6 @@
 <template>
+<div>
+    <vue-title :title="'Pomodoro ' + this.formatStoMSS(this.counter)"></vue-title>
     <v-card
             max-width="450"
             class="mx-auto"
@@ -36,32 +38,47 @@
             <v-spacer></v-spacer>
         </v-card-actions>
     </v-card>
+</div>
+
+
 </template>
 
 <script>
     import {Howl} from 'howler';
+    import moment from "moment";
     require('howler');
 
     export default {
         data () {
             return {
                 tabs: null,
-                pomodoroTime: 10,
-                shortBreakTime: 3,
-                longBreakTime: 5,
-                counter: 10,
+                pomodoroTime: 1500,
+                shortBreakTime: 300,
+                longBreakTime: 600,
+                counter: 1500,
                 counting: false,
                 buttonText: 'START',
                 selectedPomodoro: true,
                 selectedShortBreak: false,
                 selectedLongBreak: false,
                 actualPomodoroTitle: 'Pomodoro',
-                today: new Date()
+                today: moment().calendar()
             }
+        },
+        computed: {
+            getPomodoroTime() {
+                return this.$store.getters.getPomodoroDuration
+            },
+            getShortBreakTime() {
+                return this.$store.getters.getShortBreakDuration
+            },
+            getLongBreakTime() {
+                return this.$store.getters.getLongBreakDuration
+            },
         },
         methods: {
             addFinishedPomodoro () {
-                this.$store.commit('addFinishedPomodoro',{ title: 'pomodoro 1', date: this.today })
+                this.$store.commit('addFinishedPomodoro',{ title: this.actualPomodoroTitle, date: this.today })
             },
 
             playSound(filePath, volume) {
@@ -109,9 +126,10 @@
                 }
                 else {
                     this.buttonText = 'START'
-                    this.stopCountdown()
+                    this.counting = false
+
                 }
-                console.log(this.counting)
+
 
             },
             // Startet Countdown
@@ -122,7 +140,7 @@
                         this.startCountdown()
                     }, 1000)
                 }
-                else {
+                else if (this.counting){
                     if (this.selectedPomodoro) {
                         this.playSound('bell.mp3',0.6)
                         console.log("pomodoro finished")

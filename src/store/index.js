@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
 
   state: {
-    pomodoroDuration: 10,
+    pomodoroDuration: 1500,
     shortBreakDuration: 3,
     longBreakDuration: 10,
     finishedPomodoros: [],
