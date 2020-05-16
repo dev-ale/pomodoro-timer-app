@@ -26,7 +26,7 @@ export default new Vuex.Store({
       state.longBreakDuration = payload
     },
     addFinishedPomodoro (state, payload) {
-      state.finishedPomodoros.push(payload)
+      state.finishedPomodoros.unshift(payload)
     },
   },
   actions: {

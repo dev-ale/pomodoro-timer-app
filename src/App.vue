@@ -4,7 +4,7 @@
     <Navbar></Navbar>
     <v-content>
       <Timer class="mt-10"></Timer>
-      <Tasks class="mt-5"></Tasks>
+      <Tasks></Tasks>
     </v-content>
   </v-app>
 </template>

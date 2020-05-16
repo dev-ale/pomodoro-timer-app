@@ -1,12 +1,12 @@
 <template>
     <v-card max-width="450" class="mx-auto">
 <!--        <v-text-field v-model="actualPomodoroTitle"></v-text-field>-->
-        <v-card-title>Tasks: </v-card-title>
+        <v-card-title>History: </v-card-title>
         <v-list flat>
             <v-list-item-group v-model="pomodoros" color="primary">
                 <v-list-item v-for="(pomodoro, i) in pomodoros" :key="i">
                     <v-list-item-content>
-                        <v-list-item-title>{{ pomodoro.title }}</v-list-item-title>
+                        <v-list-item-title class="red--text">{{ pomodoro.title }}</v-list-item-title>
                         {{ pomodoro.date }}
                     </v-list-item-content>
                     <v-list-item-icon>

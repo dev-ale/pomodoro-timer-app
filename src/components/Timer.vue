@@ -1,6 +1,6 @@
 <template>
 <div>
-    <vue-title :title="'Pomodoro ' + this.formatStoMSS(this.counter)"></vue-title>
+    <vue-title :title="this.actualTimer + ' - ' + this.formatStoMSS(this.counter)"></vue-title>
     <v-card
             max-width="450"
             class="mx-auto"
@@ -38,6 +38,17 @@
             <v-spacer></v-spacer>
         </v-card-actions>
     </v-card>
+
+    <div style="width: 470px" class="center" >
+        <v-text-field
+                v-if="this.actualTimer === 'Pomodoro'"
+                dense
+                v-model= actualPomodoroTitle
+                solo
+                clearable
+        ></v-text-field>
+    </div>
+
 </div>
 
 
@@ -52,17 +63,18 @@
         data () {
             return {
                 tabs: null,
-                pomodoroTime: 1500,
-                shortBreakTime: 300,
-                longBreakTime: 600,
-                counter: 1500,
+                pomodoroTime: 15,
+                shortBreakTime: 5,
+                longBreakTime: 3,
+                counter: 15,
                 counting: false,
                 buttonText: 'START',
                 selectedPomodoro: true,
                 selectedShortBreak: false,
                 selectedLongBreak: false,
-                actualPomodoroTitle: 'Pomodoro',
-                today: moment().calendar()
+                actualPomodoroTitle: 'Choose a topic for your timer!',
+                today: moment().calendar(),
+                actualTimer: 'Pomodoro'
             }
         },
         computed: {
@@ -90,27 +102,33 @@
                 sound.play();
             },
             onTabPomodoro() {
-                console.log("Pomodoro selected")
                 this.counter = this.pomodoroTime
                 this.selectedPomodoro = true
                 this.selectedShortBreak = false
                 this.selectedLongBreak = false
+                this.actualTimer = 'Pomodoro'
+                this.actualPomodoroTitle = 'Choose a topic for your timer!'
+                console.log(this.actualTimer)
                 // Todo change Background Color
             },
             onTabShortBreak() {
-                console.log("Short Break selected")
                 this.counter = this.shortBreakTime
                 this.selectedPomodoro = false
                 this.selectedShortBreak = true
                 this.selectedLongBreak = false
+                this.actualTimer = 'Short Break'
+                this.actualPomodoroTitle = this.actualTimer
+                console.log(this.actualTimer)
                 // Todo change Background Color
             },
             onTabLongBreak() {
-                console.log("Long Break selected")
                 this.counter = this.longBreakTime
                 this.selectedPomodoro = false
                 this.selectedShortBreak = false
                 this.selectedLongBreak = true
+                this.actualTimer = 'Long Break'
+                this.actualPomodoroTitle = this.actualTimer
+                console.log(this.actualTimer)
                 // Todo change Background Color
             },
             // Method to change seconds in minutes and seconds M:SS
@@ -155,6 +173,7 @@
                         this.playSound('bell.mp3',0.6)
                         console.log("short break finished")
                         setTimeout(() => {
+                            this.addFinishedPomodoro()
                             this.counter = this.shortBreakTime
                             this.onButtonClick()
                         }, 1000);
@@ -164,6 +183,7 @@
                         this.playSound('bell.mp3',0.6)
                         console.log("long break finished")
                         setTimeout(() => {
+                            this.addFinishedPomodoro()
                             this.counter = this.longBreakTime
                             this.onButtonClick()
                         }, 1000);
@@ -177,3 +197,10 @@
 
 </script>
 
+<style>
+    .center {
+        margin: auto;
+        width: 50%;
+        padding: 10px;
+    }
+</style>
