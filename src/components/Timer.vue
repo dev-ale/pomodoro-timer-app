@@ -37,16 +37,22 @@
             </v-btn>
             <v-spacer></v-spacer>
         </v-card-actions>
+        <v-row>
+            <v-col cols="12" sm="6" offset="3">
+                <v-text-field
+                        v-if="this.actualTimer === 'Pomodoro'"
+                        dense
+                        v-model= actualPomodoroTitle
+                        placeholder="Choose a topic"
+                        clearable
+                ></v-text-field>
+            </v-col>
+        </v-row>
+
     </v-card>
 
     <div style="width: 470px" class="center" >
-        <v-text-field
-                v-if="this.actualTimer === 'Pomodoro'"
-                dense
-                v-model= actualPomodoroTitle
-                solo
-                clearable
-        ></v-text-field>
+
     </div>
 
 </div>
@@ -63,16 +69,16 @@
         data () {
             return {
                 tabs: null,
-                pomodoroTime: 15,
-                shortBreakTime: 5,
-                longBreakTime: 3,
-                counter: 15,
+                pomodoroTime: 5,
+                shortBreakTime: 3,
+                longBreakTime: 4,
+                counter: 5,
                 counting: false,
                 buttonText: 'START',
                 selectedPomodoro: true,
                 selectedShortBreak: false,
                 selectedLongBreak: false,
-                actualPomodoroTitle: 'Choose a topic for your timer!',
+                actualPomodoroTitle: '',
                 today: moment().calendar(),
                 actualTimer: 'Pomodoro'
             }
@@ -86,6 +92,9 @@
             },
             getLongBreakTime() {
                 return this.$store.getters.getLongBreakDuration
+            },
+            getPomodoros () {
+                return this.$store.getters.getFinishedPomodoros
             },
         },
         methods: {
@@ -107,8 +116,10 @@
                 this.selectedShortBreak = false
                 this.selectedLongBreak = false
                 this.actualTimer = 'Pomodoro'
-                this.actualPomodoroTitle = 'Choose a topic for your timer!'
+                this.actualPomodoroTitle = ''
                 console.log(this.actualTimer)
+
+                console.log(this.getPomodoroTime())
                 // Todo change Background Color
             },
             onTabShortBreak() {
