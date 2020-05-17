@@ -69,10 +69,10 @@
         data () {
             return {
                 tabs: null,
-                pomodoroTime: 5,
-                shortBreakTime: 3,
-                longBreakTime: 4,
-                counter: 5,
+                pomodoroTime: 1500,
+                shortBreakTime: 300,
+                longBreakTime: 600,
+                counter: 1500,
                 counting: false,
                 buttonText: 'START',
                 selectedPomodoro: true,
